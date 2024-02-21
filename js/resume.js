@@ -1,3 +1,10 @@
+function addColor(ele){
+  ele.classList.add('colored')
+}
+function removeColor(ele){
+  ele.classList.remove('colored')
+}
+
 (function($) {
   "use strict"; // Start of use strict
 
