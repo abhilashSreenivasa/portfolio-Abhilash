@@ -58,6 +58,17 @@ h2 {
   font-weight: 600;
   text-transform: uppercase; }
 
+  #content {
+    width: 100%; /* Set width according to your content */
+    transition: transform 0.3s ease-in-out;
+    overflow-x: hidden;
+  }
+  
+  /* Change transform value based on scroll position */
+  .scrolled-down .content {
+    transform: translateX(-100px); /* Adjust this value as needed */
+  }
+
 @media (min-width: 992px) {
   #sideNav {
     text-align: center;

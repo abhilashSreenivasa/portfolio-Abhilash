@@ -1,9 +1,16 @@
-function addColor(ele){
-  ele.classList.add('colored')
-}
-function removeColor(ele){
-  ele.classList.remove('colored')
-}
+window.addEventListener('scroll', function() {
+  this.alert("hello")
+  var scrolled = window.scrollY;
+  var content = document.querySelector('.content');
+  if (scrolled > 0) {
+    content.classList.add('scrolled-down');
+  } else {
+    content.classList.remove('scrolled-down');
+  }
+});
+
+
+
 
 (function($) {
   "use strict"; // Start of use strict
