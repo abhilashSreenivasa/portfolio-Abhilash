@@ -21,8 +21,6 @@
   <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
 
   <!-- Custom styles for this template -->
-  <link href="css/resume.min.css" rel="stylesheet">
-
   <style>
     .toast-notification {
       position: fixed;
@@ -445,6 +443,7 @@
       const name = document.getElementById('senderName').value;
       const email = document.getElementById('senderEmail').value;
       const message = document.getElementById('message').value;
+      console.log(name+" "+email+" "+ message)
       
       // Disable button during submission
       submitBtn.disabled = true;
