@@ -28,7 +28,6 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background-color: #28a745;
       color: white;
       padding: 15px 20px;
       border-radius: 5px;
@@ -44,6 +43,14 @@
       transform: translateY(0);
     }
 
+    .toast-notification.success {
+      background-color: #28a745;
+    }
+
+    .toast-notification.error {
+      background-color: #dc3545;
+    }
+
     .contact-form {
       max-width: 600px;
     }
@@ -54,6 +61,11 @@
 
     .contact-form textarea {
       min-height: 150px;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -369,7 +381,7 @@
           <div class="form-group">
             <textarea class="form-control" id="message" placeholder="Your Message" required></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
         </form>
       </div>
     </section>
@@ -378,7 +390,7 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="toast-notification">
-    <i class="fa fa-check-circle"></i> Successfully sent a message!
+    <span id="toastMessage"></span>
   </div>
 
   <!-- Bootstrap core JavaScript -->
@@ -391,6 +403,9 @@
   <!-- Custom scripts for this template -->
   <script src="js/resume.min.js"></script>
 
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
   <script>
     function addColor(ele) {
       ele.classList.add('colored')
@@ -400,31 +415,61 @@
       ele.classList.remove('colored')
     }
 
+    // Initialize EmailJS with your public key
+    // Sign up at https://www.emailjs.com/ to get your keys
+    (function() {
+      emailjs.init("PUBLIC_KEY"); // Replace with your EmailJS public key
+    })();
+
+    function showToast(message, isSuccess) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastMessage.innerHTML = isSuccess 
+        ? '<i class="fa fa-check-circle"></i> ' + message
+        : '<i class="fa fa-exclamation-circle"></i> ' + message;
+      
+      toast.className = 'toast-notification ' + (isSuccess ? 'success' : 'error');
+      toast.classList.add('show');
+      
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
     // Contact form submission
     document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
+      const submitBtn = document.getElementById('submitBtn');
       const name = document.getElementById('senderName').value;
       const email = document.getElementById('senderEmail').value;
       const message = document.getElementById('message').value;
       
-      // Create mailto link
-      const mailtoLink = `mailto:abhilash.sreenivasa@gmail.com?subject=Message from ${encodeURIComponent(name)}&body=${encodeURIComponent('From: ' + name + '\nEmail: ' + email + '\n\n' + message)}`;
+      // Disable button during submission
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
       
-      // Open email client
-      window.location.href = mailtoLink;
-      
-      // Show toast notification
-      const toast = document.getElementById('toast');
-      toast.classList.add('show');
-      
-      // Clear form
-      document.getElementById('contactForm').reset();
-      
-      // Hide toast after 3 seconds
-      setTimeout(function() {
-        toast.classList.remove('show');
-      }, 3000);
+      // Send email using EmailJS
+      emailjs.send("SERVICE_ID", "TEMPLATE_ID", {
+        from_name: name,
+        from_email: email,
+        message: message,
+        to_email: "abhilash.sreenivasa@gmail.com"
+      })
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+        showToast('Successfully sent a message!', true);
+        document.getElementById('contactForm').reset();
+      }, function(error) {
+        console.log('FAILED...', error);
+        showToast('Failed to send message. Please try again later.', false);
+      })
+      .finally(function() {
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      });
     });
   </script>
 </body>
