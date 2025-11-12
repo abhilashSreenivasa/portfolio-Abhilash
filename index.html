@@ -19,9 +19,10 @@
   <link href="vendor/devicons/css/devicons.min.css" rel="stylesheet">
   <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
   <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-  <link rel="stylesheet" href="css/resume.css"/>
 
   <!-- Custom styles for this template -->
+  <link href="css/resume.min.css" rel="stylesheet">
+
   <style>
     .toast-notification {
       position: fixed;
@@ -417,7 +418,7 @@
     // Initialize EmailJS with your public key
     // Sign up at https://www.emailjs.com/ to get your keys
     (function() {
-      emailjs.init("PUBLIC_KEY"); // Replace with your EmailJS public key
+      emailjs.init("xCcS1XRnDcD-_VY--");
     })();
 
     function showToast(message, isSuccess) {
@@ -444,7 +445,6 @@
       const name = document.getElementById('senderName').value;
       const email = document.getElementById('senderEmail').value;
       const message = document.getElementById('message').value;
-      console.log(name+" "+email+" "+ message)
       
       // Disable button during submission
       submitBtn.disabled = true;
@@ -457,7 +457,7 @@
         message: message
       };
       
-      emailjs.send("SERVICE_ID", "TEMPLATE_ID", templateParams)
+      emailjs.send("service_kvs33mo", "template_zrba3f9", templateParams)
       .then(function(response) {
         console.log('SUCCESS!', response.status, response.text);
         showToast('Successfully sent a message!', true);
